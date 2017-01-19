@@ -1,0 +1,624 @@
+process start on bootup : /etc/inittabs or /etc/init.d by defining entries at /etc/rcX.d folder where X is run level.
+
+there are 5 run init level in linux . 
+l-1 -> ex:terminal , l-2 -> ex: linux apps , l-5 -> Graphical desktop window
+
+
+by changing init run level from 3 to 5 , system will change from console based to Gphaical 
+
+KDE -> K desktop envnment first Graphical desktop env.
+
+GNOME -> G network object model env. (Default for linux now)
+
+
+linux distributions :
+
+1. slackware : original 
+2. red hat : internet server
+3. fedora : home use
+4. Gentoo : advance linux users
+5. openSUSE : business and home
+6. Debian : linux experts
+
+
+Accessing CLI on linux for text mode .
+
+ctrl+alt + f1 -> CLI
+ctrl+alt + f2 -> GUI
+f3
+f4 till f7
+
+tty-> teletypewriter
+
+
+---------------------------
+
+
+For inverse screen colors :
+
+setterm -inversescreen on
+off
+
+setterm -background white
+
+setterm -forground black 
+
+yellow , green, red , magenta etc
+
+
+setterm -reset 
+-------------------------------------
+Terminal :
+
+for anything new tab : sht+ctrl+n
+sht+ctr+t  -> tab
+s+c+w or q-> close
+s+c+q -> close window
+
+-------------------------------------------
+fullscreen -> f11
+zoom in -> ctrl++
+
+normal -> ctrl+0
+
+auto size -> c+a+s
+-------------------------------------------
+
+xterm and uxterm are also terminals
+
+xterm -bg white
+
+xterm -bg white -fg black
+
+---------------------------
+help :
+
+
+man xterm then q for quit
+xterm -h
+
+
+------------------------------
+
+Commands :
+
+
+ls
+
+ls -F (to find files & dir diff)
+
+ls -F -R (recrussive for subdirs)
+
+ls -l (long list)
+
+ls -l dirname
+
+ls -l dir?ame
+
+ls -l sub*
+
+ls -l sub*ns
+
+ls -l sub[ld]mans
+
+---------
+
+touch test_one
+
+
+for checking time
+
+ls -l --time=atime      (a=access time)
+
+ls -Fd *te
+this will find like : subbrute anything end with te
+
+
+
+cp -R Scripts/ Mod_scripts
+
+this recrussive copy all subdirs to mod_scrips folder
+
+
+--------------------------
+
+to create subdirs along use
+
+mkdir -p parent/child/son
+
+rmdir
+
+rmdir -r dirname  (for deleting all subdirs aswell)
+
+rm -rf
+
+(recrusive and forcely)
+--------------------------
+
+
+cat -n file.txt (no of lines)
+
+
+tail ( shows last 10 lines of file)
+
+
+tail -n 2 file.txt (show last 2 lines of file)
+
+
+head file.txt,
+
+  shows top 10 lines of file and it is opp of tail
+
+
+-------------------------------------
+
+ps (all process running)
+
+ps -A (all process)
+
+ps -e (all process)
+
+ps -ef (all process with format)
+
+kill PID (will kill program)
+
+killall subli* (u can kill sublime with this)
+
+-------------------------------------
+
+GREP:
+
+
+grep key filename
+
+grep one test.txt
+
+grep t test.txt ( any line starts with t)
+
+grep -n t test.txt (display line no)
+
+grep -c t test.txt(three times letter starts with t in file)
+
+
+------------------------------
+
+Archieving data :
+
+tar COMMAND
+
+creating .tar file using dirs
+
+tar -cvf test.tar test/ test1/ 
+
+(cvf -> create,list of files , tar formeat)
+
+tar -xvf test.tar
+
+(xvf -> extract,list of files , which is in tar)
+
+--------------------------------------
+
+Understanding the Shell:
+
+There are two shells
+
+/bin/sh
+/bin/bash
+/bin/dash
+
+exit
+
+ps --forest (for good gui)
+
+-----------------
+
+pwd ; ls ; cat /etc/passwd ; whoami
+
+(pwd;ls;cat /etc/passwd;whoami)
+
+--------------------
+
+pwd ; ls ; cat /etc/passwd ; whoami ; ls ; echo $BASH_SUBSHELL
+
+this returns 0 which means no bash subshell is created .
+
+bash subshell is only created when it is define using parenthesis
+
+
+(pwd ; ls ; cat /etc/passwd ; whoami ; ls ; echo $BASH_SUBSHELL)
+
+returns 1 which means shell created .
+
+
+root@arbaz:~# (pwd; echo $BASH_SUBSHELL)
+/root
+1
+
+shell is not created here , we need () to create
+
+root@arbaz:~# (pwd; (echo $BASH_SUBSHELL))
+/root
+2
+
+Now created
+
+----------------------------------------------
+
+sleep 3
+
+sleep 3 && ps -f 
+
+jobs (checking users process which is running in background)
+
+jobs -l (to get pid of job running)
+
+--------------------------------
+
+(sleep 2; echo $BASH_SUBSHELL ; sleep 2)
+
+2 sec sleep , 1 then 2 sec sleep 
+
+
+(sleep 2; echo $BASH_SUBSHELL ; sleep 2)&
+
+Result :
+
+JOB Number,PID, 1 and press enter then 
+
+JOB NUMBER AGAIN and Done.
+
+--------------------------------------
+
+(tar -cf Rich.tar Downloads/; tar -cf my.tar Music/)&
+
+Result :
+return pid
+
+[1] 2141
+
+
+co-processing:
+
+coproc will do its given job in background and return the PID .
+
+root@arbaz:~# coproc sleep 5
+[1] 2147
+root@arbaz:~# jobs
+[1]+  Done                    coproc COPROC sleep 5
+root@arbaz:~# 
+
+root@arbaz:~# coproc (sleep 10; sleep2)
+[1] 2149
+root@arbaz:~# jobs
+[1]+  Running                 coproc COPROC ( sleep 10; sleep2 ) &
+
+
+---------------------------
+
+
+
+oot@arbaz:~# which ps
+/bin/ps
+root@arbaz:~# type ps
+ps is hashed (/bin/ps)
+root@arbaz:~# type -a ps
+ps is /bin/ps
+root@arbaz:~# 
+
+
+$history (all inputs till 23)
+
+
+
+type !! is terminal to use history easily .
+
+history is kep under .bash_history file located in home.
+
+
+cd ~ 
+
+cat .bash_history
+
+
+history -n
+
+----------------------------------------------------------------------------------------------------------
+
+Using Linux Environ Vars:
+
+
+
+
+global vars :
+
+printenv or env
+
+printenv PWD
+
+printenV HOME
+
+env HOME (Doesnt work)
+
+echo $HOME
+
+
+ls $HOME
+
+
+--------------------------
+
+
+set 
+
+this command display all local vars
+
+displays both local + global
+
+----------------------------
+
+user defined var :
+
+
+root@arbaz:~# echo $my_variable
+
+root@arbaz:~# my_variable=Hello
+root@arbaz:~# echo $my_variable
+Hello
+root@arbaz:~# my_variable=Hello World
+bash: World: command not found
+root@arbaz:~# my_variable="Hello World"
+root@arbaz:~# echo $my_variable
+Hello World
+
+
+-----------------------------------
+
+creating local variable and adding to global by using export
+
+echo $my_var
+
+my_var="Hello HaXER"
+
+export my_var
+
+bash
+
+echo $my_var
+
+
+exit
+
+----------------------------------
+
+Removing Envorment Var Using UNSET
+
+root@arbaz:~# echo $my_var
+
+root@arbaz:~# my_var="i m Global Now"
+root@arbaz:~# echo $my_var
+i m Global Now
+root@arbaz:~# 
+root@arbaz:~# unset my_var
+root@arbaz:~# 
+root@arbaz:~# echo $my_var
+
+
+
+---------------------------------
+
+path environment variables :
+
+
+root@arbaz:~# echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+root@arbaz:~# PATH=$PATH:/root/Desktop/Pentest-Suite
+root@arbaz:~# echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/Desktop/Pentest-Suite
+root@arbaz:~# PATH=$PATH:/root/Desktop/Pentest-Suite/subdomains/knock/knockpy
+root@arbaz:~# echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/Desktop/Pentest-Suite:/root/Desktop/Pentest-Suite/subdomains/knock/knockpy
+
+
+-------------------------------------------
+
+Arrays
+
+root@arbaz:~# my_test=(1 2 3 4 5)
+root@arbaz:~# echo $my_test
+1
+root@arbaz:~# echo ${my_test[*]}
+1 2 3 4 5
+root@arbaz:~# mytest[2]=7
+root@arbaz:~# echo ${my_test[*]}
+1 2 3 4 5
+root@arbaz:~# echo $my_test
+1
+root@arbaz:~# echo ${my_test[*]}
+1 2 3 4 5
+root@arbaz:~# my_test[2]=7
+root@arbaz:~# echo ${my_test[*]}
+1 2 7 4 5
+root@arbaz:~# unset my_test[2]
+root@arbaz:~# echo ${my_test[*]}
+1 2 4 5
+root@arbaz:~# unset my_test
+root@arbaz:~# echo ${my_test[*]}
+
+root@arbaz:~# 
+
+
+----------------------------------------------------
+Chapter 7 : Understanding Linux File Permission:
+
+
+useradd -m testing
+
+userdel -r testing
+
+passwd (changin passwd)
+
+passwd testing (changing passwd for testing user)
+
+
+echo $SHELL (to check current shell)
+
+apt-get install csh (csh is type of shell located at /bin/csh)
+
+root@arbaz:~# chsh -s /bin/csh testing (this command will change shell for testing user from /bin/bash to /bin/csh)
+
+-------------------------------------------------
+
+finger root (info)
+
+chfn testing   (to set information about user) can be view in /etc/passwd
+
+----------------------------------------------------
+
+umask  commands set default permission for any file or dir we create
+
+
+permissions ex:
+
+-rwxrwxr-x 
+
+owner : rwx
+group owner : rwx
+other user : r and x only .
+
+
+linux permisson codes table :
+
+permission         binary            octal
+
+---                000                0
+--x                001                1
+-w-                010                2
+-wx                011                3
+r--                100                4
+r-x                101                5
+rw-                110                6
+rwx                111                7
+
+
+
+octal value 664 means :
+rw-rw-r--
+
+owner : rw-
+owner grp : rw-
+others : r--
+
+chmod 777 means : rwxrwxrwx for all 3 groups
+
+------------------------------------
+
+Changing OwnerShip:
+
+root@arbaz:~/Desktop/practicelinux/permission# ls -l
+total 0
+-rw-rw-rw- 1 root root 0 Jan 19 05:27 newfile
+root@arbaz:~/Desktop/practicelinux/permission# chown testing newfile
+root@arbaz:~/Desktop/practicelinux/permission# ls -l
+total 0
+-rw-rw-rw- 1 testing root 0 Jan 19 05:27 newfile
+
+changing user permission on file from root to testing acc
+
+--------------------------------------
+
+Creating DIRS AND FILES WHICH CAN BE SHARED AMONG ALL USERS ON PC:
+
+
+
+mkidir sharedir 
+
+ls -l
+
+chgrp shadow sharedir/ -> changing grp to shadow
+
+chmod 666 sharedir/  -> read & write
+
+------------------------------------------------------------
+
+
+Chap 8 : Managing File Systems :
+
+Read this chapter LATER
+
+------------------------------------------------------------
+
+chapter 9 : installing software
+
+PMS -> Package management system like apt-get 
+
+apt -> aptitude
+
+$aptitude
+
+apt show figlet
+
+dpkg -L vim (list all packages starts with vim)
+
+apt search KEYWORD 
+
+apt search zmap
+
+
+apt-get purge zmap (purge -> Will Remove)
+
+
+-> Red hat based system :
+
+
+yum list installed
+
+i m not going into depth about other distro settings so skiping this.
+
+
+-------
+
+installing from source code :
+
+tar -zxvf systat-11.1.1.tar.gz (unpacking)
+
+cd systat-11.1.1 
+
+ls
+
+./configure (this will ensure proper lib depen )
+
+make
+
+make install 
+
+and Done :)
+
+-------------------------------------------
+
+
+Chapter 10 : Working with Editors
+
+
+----------------------------------------
+
+vim editor :
+
+in normal mode :
+
+h -> left
+l -> right
+k -> up
+j -> down
+
+
+q -> quit
+q! -> discard quit
+wq -> save and quit
+w -> save
+
+
+----------------------------------
+
+
+
+
