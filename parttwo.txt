@@ -1,0 +1,315 @@
+WC COMMAND :
+
+wc < test.txt
+
+2  11  60
+
+2-> no of lines
+11 -> no of words
+60 -> bytes size
+
+------------------------------------------
+
+EXPR Command:(use for mathematical equations on cli)
+
+root@arbaz:~/Desktop/practicelinux# expr 1+5
+1+
+root@arbaz:~/Desktop/practicelinux# expr 1 + 5
+6
+root@arbaz:~/Desktop/practicelinux# expr 1 * 6
+expr: syntax error
+root@arbaz:~/Desktop/practicelinux# expr 1 \* 6
+6
+
+expr 20 / 10
+$ 2
+
+-------------------------------------------------------
+
+root@arbaz:~/Desktop/practicelinux/scripts# var1=$[1 + 5]
+root@arbaz:~/Desktop/practicelinux/scripts# echo $var1
+6
+root@arbaz:~/Desktop/practicelinux/scripts# var2=$[2 * 5 + 2]
+root@arbaz:~/Desktop/practicelinux/scripts# echo $var2
+12
+
+
+===============================================================
+BC : it is programming lang for bash calc , for floating expressions :
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# bc
+bc 1.06.95
+Copyright 1991-1994, 1997, 1998, 2000, 2004, 2006 Free Software Foundation, Inc.
+This is free software with ABSOLUTELY NO WARRANTY.
+For details type `warranty'. 
+12 * 1
+12
+12 * 1.2
+14.4
+exit
+0
+quit
+root@arbaz:~/Desktop/practicelinux/scripts# 
+
+root@arbaz:~/Desktop/practicelinux/scripts# bc
+bc 1.06.95
+Copyright 1991-1994, 1997, 1998, 2000, 2004, 2006 Free Software Foundation, Inc.
+This is free software with ABSOLUTELY NO WARRANTY.
+For details type `warranty'. 
+var1=10
+var1 * 4
+40
+var2 = var1 / 5
+print var2
+2
+quit
+root@arbaz:~/Desktop/practicelinux/scripts# 
+
+======================================================================
+
+EXIT STATUS :
+
+root@arbaz:~/Desktop/practicelinux/scripts# echo $?
+0
+root@arbaz:~/Desktop/practicelinux/scripts# date
+Fri Jan 20 04:09:34 EST 2017
+root@arbaz:~/Desktop/practicelinux/scripts# echo $?
+0
+root@arbaz:~/Desktop/practicelinux/scripts# sdgasag
+bash: sdgasag: command not found
+root@arbaz:~/Desktop/practicelinux/scripts# echo $?
+127
+root@arbaz:~/Desktop/practicelinux/scripts# echo $?
+0
+root@arbaz:~/Desktop/practicelinux/scripts# 
+
+
+code : 0 -> Sucess
+127 -> Command not found
+126 -> Can't executed maybe permission access
+
+-----------------------------------------------------
+
+Chapter 12 : Using Sturcuted Commands :
+
+test -> it is command to check whether it holds data or not 
+
+if hold then true
+if not then false in bash
+
+------
+
+Numeric comarisons
+
+n1 -eq n2  = n1 = n2
+n1 -ge n2  = n1 >= n2
+n1 -gt n2  = n1 > n2
+n1 -le n2  = n1 <= n2
+n1 -lt n2  = n1 < n2
+n1 -ne n2  = n1 != n2
+
+String Comparisons
+
+
+-n str1  => checks if str1 has length greather than zero
+-z str1 => checks if str1 has lenght of zero
+
+File Comparisons
+
+-d  -> Checks if file exists and is a directory
+-e -> checks if file exits
+-f -> Check if files exists and is a file
+-r -> check if read access
+-w -> check if write acess
+-s -> Check if file is empty and doesn't have any data
+-O -> Checking ownership
+----------------
+
+============================================
+
+Chapter 13 : More Structured Commands :
+
+IFS = internal field seperator
+
+IFS=$"\n" ->  this will take each new line
+IFS=: -> this is take earch Colon value ex: root:0:0:1
+root
+0
+0
+1
+
+----------------------------------
+
+chapter 14: handling user input :
+
+
+
+
+$1 to $9 are user input data from command line parameter
+after $9 if u want to have big parameter tool
+then use
+
+${10} to ${any} for big one
+
+
+$# -> identify how many parameters submitted 
+
+echo There was $# parameters supplied
+
+./test 1 2 3 4
+
+There was 5 params supplied
+
+${!#} -> takes last parameter ex: 4 from above script
+
+------------------------------
+
+grabing all data :
+
+$* and $@ takes all given params.
+
+--------------------------
+
+learn getopt and shift command in dept
+ pg:385
+----------------------------
+
+Chapter 15: Presenting Data :
+
+ls -l > test (save output)
+
+cat < test.txt (display output of test.txt)
+
+who >> test (append to exist file test)
+
+
+Linux Standard file descriptor 
+
+
+file descriptor  FOR 
+0                 stdin
+1                 stdout
+2                 stderr
+
+ls -al badfile 2> test
+
+here badfile is file in which we store the output
+
+2 is file descriptor for handling error to diplay on screen and redirecting it into test.
+
+-------------------
+
+root@arbaz:~/Desktop/practicelinux/scripts/errors# ls -al test test2 test3 badtest 2> test6 1> test7
+
+ls -al test test2 test3 badtest 2> test6 1> test7
+
+here test,test2,test3,badtest are dirs if any error (2) -> file descriptor redirected out put to test6 and if no error (1) file descriptor , redirect to test7 stdinput
+
+
+root@arbaz:~/Desktop/practicelinux/scripts/errors# ls
+test2  test3  test6  test7
+root@arbaz:~/Desktop/practicelinux/scripts/errors# cd test
+bash: cd: test: No such file or directory
+root@arbaz:~/Desktop/practicelinux/scripts/errors# cd test7
+bash: cd: test7: Not a directory
+root@arbaz:~/Desktop/practicelinux/scripts/errors# ls
+test2  test3  test6  test7
+root@arbaz:~/Desktop/practicelinux/scripts/errors# cat test7
+test2:
+total 8
+drwxr-xr-x 2 root root 4096 Jan 24 08:36 .
+drwxr-xr-x 4 root root 4096 Jan 24 08:37 ..
+
+test3:
+total 8
+drwxr-xr-x 2 root root 4096 Jan 24 08:36 .
+drwxr-xr-x 4 root root 4096 Jan 24 08:37 ..
+root@arbaz:~/Desktop/practicelinux/scripts/errors# cat test6
+ls: cannot access 'test': No such file or directory
+ls: cannot access 'badtest': No such file or directory
+root@arbaz:~/Desktop/practicelinux/scripts/errors# 
+
+-----------------------------------------------------------
+
+u can also use to redirected output of strerr and strout into file
+
+ls -al test test2 test3 badtest &> test7
+
+cat test7
+
+----------------------------------------
+
+learn about filedescriptors in more depth
+
+====================================================
+
+lsof (info about all process running on machine)
+
+==================================================
+
+tee performs both stdout and display it on monitor.
+
+date | tee test.txt
+
+who | tee -a test.txt (-a for append)
+
+-------------------------------
+
+Chapter 16: Script Control:
+
+Linux Signals
+
+
+1 -> SIGHUP -> Hangs
+2 -> SIGINT -> Interuppt
+3 -> SIGKILL -> Kills
+3 -> SIGQUIT -> STOPS
+15-> SIGTERM -> Terminate
+18->SIGSTP->STOPS
+
+
+
+sleep 10
+now press ctrl + c
+sends SIGINT Signal.
+
+if we press ctrl + z
+it stops(18)
+
+do ps
+and see sleep status
+
+now use kill -9 PID of sleep
+
+-9 -> SIGKILL Sending 
+
+
+------------------
+
+using ./60 & 
+[1] 1323 
+
+return PID and run it in background .
+
+when u close terminal , background running process also closed.
+
+to avoid this use 
+
+nohup command 
+
+nohup ./60 &
+
+--------------------------------------------
+
+jobs command to view jobs
+
+jobs -l
+
+kill <PID>
+
+use bg command to restart background process 
+
+
+
+
