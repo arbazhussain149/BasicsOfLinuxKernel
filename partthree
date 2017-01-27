@@ -1,0 +1,680 @@
+Chapter 17 : Creating functions :
+
+Chapter 18: writing scripts :
+
+PS3 is special prompt same like read
+
+skiping dialog chapter
+---------------------
+
+chapter 19 : introducing sed and gawk
+
+echo "this is a test" | sed 's/test/big test/'
+this is a big test
+
+
+s-> substitue secound text to first one
+
+s/test/big test/
+
+chnage test to big test
+
+------------------
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat file.txt 
+unix is great os. unix is opensource. unix is free os.
+learn operating system.
+unixlinux which one you choose.
+root@arbaz:~/Desktop/practicelinux/scripts# sed 's/unix/linux/' file.txt
+linux is great os. unix is opensource. unix is free os.
+learn operating system.
+linuxlinux which one you choose.
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat file.txt 
+unix is great os. unix is opensource. unix is free os.
+learn operating system.
+unixlinux which one you choose.
+root@arbaz:~/Desktop/practicelinux/scripts# sed 's/unix/linux/; s/os/FUCK/' file.txt 
+linux is great FUCK. unix is opensource. unix is free os.
+learn operating system.
+linuxlinux which one you choFUCKe.
+root@arbaz:~/Desktop/practicelinux/scripts#
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat scripts.sed 
+s/unix/linux/
+s/os/FUCK/
+
+root@arbaz:~/Desktop/practicelinux/scripts# sed -f scripts.sed file.txt 
+linux is great FUCK. unix is opensource. unix is free os.
+learn operating system.
+linuxlinux which one you choFUCKe.
+root@arbaz:~/Desktop/practicelinux/scripts# 
+
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# gawk '{print "Hello World"}'
+a
+Hello World
+d
+Hello World
+dg
+Hello World
+
+Hello World
+gsd
+Hello World
+hg
+Hello World
+ds
+Hello World
+h
+Hello World
+root@arbaz:~/Desktop/practicelinux/scripts# vi data2.txt
+root@arbaz:~/Desktop/practicelinux/scripts# cat data2.txt 
+one line of text.
+secound line of text test.
+lol this is lines .
+root@arbaz:~/Desktop/practicelinux/scripts# gawk '{print $1}' data2.txt 
+one
+secound
+lol
+root@arbaz:~/Desktop/practicelinux/scripts# 
+
+
+
+
+$0-> Entire line
+$1-> First data field of line
+$2 -> Secound data f of l
+$n -> nth data f of l
+
+
+gawk -F: '{print $1}' /etc/passwd
+
+-F: -> -F is field seperator (:) in /etc/passwd
+
+root@arbaz:~/Desktop/practicelinux/scripts# echo "My Name is Arbaz" | gawk '{$4="HUSSAIN"; print $0}'
+My Name is HUSSAIN
+
+
+$4 -> 4th data field , 
+$0 -> entire line
+
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# gawk '{
+> $3="Arbaz"
+> print $0}'
+My Name lol
+My Name Arbaz
+
+---------------------------------------------------
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat script2.gawk 
+{print $1 " home directory is " $6}
+root@arbaz:~/Desktop/practicelinux/scripts# gawk -F: -f script2.gawk /etc/passwd
+root home directory is /root
+daemon home directory is /usr/sbin
+bin home directory is /bin
+sys home directory is /dev
+sync home directory is /bin
+games home directory is /usr/games
+
+
+------------------------------------------------
+root@arbaz:~/Desktop/practicelinux/scripts# cat script3.gawk 
+{
+text = "is home directory is"
+print $1 text $6
+}
+root@arbaz:~/Desktop/practicelinux/scripts# gawk -F: -f script3.gawk /etc/passwd
+rootis home directory is/root
+daemonis home directory is/usr/sbin
+
+
+---------------------------------------------------------------
+
+root@arbaz:~/Desktop/practicelinux/scripts# gawk '{print "Hello"}'
+s
+Hello
+s
+Hello
+s
+Hello
+s
+Hello
+s
+Hello
+s^C
+root@arbaz:~/Desktop/practicelinux/scripts# gawk 'BEGIN {print "Hello"}'
+Hello
+root@arbaz:~/Desktop/practicelinux/scripts# 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat data3.txt 
+line 1
+line 2
+line 3
+line 4
+line 5
+
+root@arbaz:~/Desktop/practicelinux/scripts# gawk 'BEGIN {print "The data3 file Contains:"}
+> {print $0}' data3.txt
+The data3 file Contains:
+line 1
+line 2
+line 3
+line 4
+line 5
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# gawk 'BEGIN {print "the data3 file contains:"}
+{print $0}
+END {print "END OF FILE"}' data3.txt
+the data3 file contains:
+line 1
+line 2
+line 3
+line 4
+line 5
+
+END OF FILE
+
+
+
+
+
+
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat script4.gawk 
+BEGIN {
+print "The latest list of users and shells"
+print " UserID \t Shell"
+print "--------------------- \t -----------"
+FS=":"
+}
+
+{
+print $1 " \t " $7
+}
+
+END{
+print "This conclude the listing"
+}
+
+root@arbaz:~/Desktop/practicelinux/scripts# gawk -F script4.gawk /etc/passwd
+^C
+root@arbaz:~/Desktop/practicelinux/scripts# gawk -f script4.gawk /etc/passwd
+The latest list of users and shells
+ UserID 	 Shell
+--------------------- 	 -----------
+root 	 /bin/bash
+daemon 	 /usr/sbin/nologin
+bin 	 /usr/sbin/nologin
+sys 	 /usr/sbin/nologin
+sync 	 /bin/sync
+games 	 /usr/sbin/nologin
+man 	 /usr/sbin/nologin
+
+
+
+
+
+=========================================================
+
+'s/text/replacetext/<NUMBER>'
+
+number can be 1 , 2, 3 
+
+
+g -> Every occurence
+w -> Saves in new file
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat data4.txt 
+this is a test of the test script
+this is the second test of the test script
+root@arbaz:~/Desktop/practicelinux/scripts# sed 's/test/trial/' data4.txt 
+this is a trial of the test script
+this is the second trial of the test script
+root@arbaz:~/Desktop/practicelinux/scripts# sed 's/test/trial/g' data4.txt 
+this is a trial of the trial script
+this is the second trial of the trial script
+root@arbaz:~/Desktop/practicelinux/scripts# sed 's/test/trial/2' data4.txt 
+this is a test of the trial script
+this is the second test of the trial script
+
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# sed 's/test/trial/gw test.txt' data4.txt 
+this is a trial of the trial script
+this is the second trial of the trial script
+
+
+
+gw -> g(every occurence) and w -> Save in new test.txt
+
+
+---------------------------------------------
+
+addressing the numeric value in sed:
+
+
+sed '2s/dog/cat' data1.txt
+(this will replace 2nd dog from 2nd line of file)
+
+sed '2,3s/dog/cat'
+
+this will replace dog text with cat from 2nd and 3rd line only
+
+sed '2,$s/dog/cat'
+
+2,$s -> start from 2nd to the end of file lines.
+
+
+-----------------------
+
+
+sed 'd' data.txt -> will del all lines
+
+sed '3,$d' data.txt
+
+from 3 to end of lines delete
+
+
+sed '/number 1/d' data6.txt
+
+this will delete "number 1" from all lines
+
+-----------------------------
+
+insert and append :
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# echo "Arbaz" | sed "i\Test 1"
+Test 1
+Arbaz
+root@arbaz:~/Desktop/practicelinux/scripts# echo "Arbaz" | sed "a\Test"
+Arbaz
+Test
+
+
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat data1.txt 
+this is a dog.
+this is an dog.
+this is the dog.
+this is lol dog.
+root@arbaz:~/Desktop/practicelinux/scripts# sed '3i\
+> This is the inserted line.' data1.txt
+this is a dog.
+this is an dog.
+This is the inserted line.
+this is the dog.
+this is lol dog.
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# sed '$a\
+> This is a new line of text' data1.txt
+this is a dog.
+this is an dog.
+this is the dog.
+this is lol dog.
+This is a new line of text
+
+
+
+For inserting at starting point :
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# sed '1i\
+> this is one line of new text.\
+> this is another line of new text.' data1.txt
+this is one line of new text.
+this is another line of new text.
+this is a dog.
+this is an dog.
+this is the dog.
+this is lol dog.
+
+
+
+---------------------------------------------------
+
+change command : c
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat data1.txt 
+this is a dog.
+this is an dog.
+this is the dog.
+this is lol dog.
+root@arbaz:~/Desktop/practicelinux/scripts# sed '3c\
+> this is changed line of text.' data1.txt
+this is a dog.
+this is an dog.
+this is changed line of text.
+this is lol dog.
+root@arbaz:~/Desk
+
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat data1.txt 
+this is a dog.
+this is an dog.
+this is the dog.
+this is lol dog.
+root@arbaz:~/Desktop/practicelinux/scripts# sed '2,3c\
+> this is a new line of text.' data1.txt
+this is a dog.
+this is a new line of text.
+this is lol dog.
+
+
+
+----------------------------------------------------
+
+p command print line
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat data1.txt 
+this is a dog.
+this is an dog.
+this is the dog.
+this is lol dog.
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/lol/p' data1.txt 
+this is lol dog.
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '2,3p' data1.txt 
+this is an dog.
+this is the dog.
+root@arbaz:~/Desktop/practicelinux/scripts# 
+
+
+-n Command Dont show output STDOUT on screen 
+
+
+---------------------------
+
+
+sed -n '/dog/w test.txt' data1.txt
+
+cat test.txt
+
+
+r -> Reading data from another file
+
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat data1.txt 
+this is a dog.
+this is an dog.
+this is the dog.
+this is lol dog.
+root@arbaz:~/Desktop/practicelinux/scripts# cat data2.txt 
+one line of text.
+secound line of text test.
+lol this is lines .
+root@arbaz:~/Desktop/practicelinux/scripts# sed '3r data1.txt' data2.txt
+one line of text.
+secound line of text test.
+lol this is lines .
+this is a dog.
+this is an dog.
+this is the dog.
+this is lol dog.
+
+
+
+
+sed '/number 2/r' data2.txt' data1.txt
+
+
+========================================================================================
+
+Chapter 20 : Regular Expressions :
+
+for finding spcl chars like $ sysmbol
+use :   \$  
+ex: '/\$/p'
+
+^ -> Start with
+$-> end with
+. -> Any char 
+
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# ls -al da*
+-rw-r--r-- 1 root root 65 Jan 27 08:05 data1.txt
+-rw-r--r-- 1 root root 65 Jan 27 03:14 data2.txt
+-rw-r--r-- 1 root root 36 Jan 27 03:31 data3.txt
+-rw-r--r-- 1 root root 77 Jan 27 03:41 data4.txt
+est/p'rbaz:~/Desktop/practicelinux/scripts# echo "this is a test" | sed -n '/t 
+this is a test
+rial/p'
+root@arbaz:~/Desktop/practicelinux/scripts# echo "this is a test" | gawk '/test/{print $0}'
+this is a test
+root@arbaz:~/Desktop/practicelinux/scripts# echo "this is a test" | sed -n '/THIS/p'
+root@arbaz:~/Desktop/practicelinux/scripts# echo "this is a test" | sed -n '/tHIS/p'
+root@arbaz:~/Desktop/practicelinux/scripts# echo "this is a test" | sed -n '/this/p'
+this is a test
+root@arbaz:~/Desktop/practicelinux/scripts# echo "this is one" | sed -n '/is on/p'
+this is one
+root@arbaz:~/Desktop/practicelinux/scripts# echo "The cost is $4.00" | send -n "/$4.0/p"
+bash: send: command not found
+root@arbaz:~/Desktop/practicelinux/scripts# echo "The cost is $4.00" | sed -n "/$4.0/p"
+The cost is .00
+root@arbaz:~/Desktop/practicelinux/scripts# echo "The cost is $4.00" | sed -n '/\$/p"
+> ^C
+root@arbaz:~/Desktop/practicelinux/scripts# echo "The cost is $4.00" | sed -n '/\$/p'
+root@arbaz:~/Desktop/practicelinux/scripts# echo "The cost is $4.00" | sed -n "/\$/p"
+The cost is .00
+root@arbaz:~/Desktop/practicelinux/scripts# echo "the cost is $5.00" > dollar.txt
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/\$/p' dollar.txt 
+root@arbaz:~/Desktop/practicelinux/scripts# cat dollar.txt 
+the cost is .00
+root@arbaz:~/Desktop/practicelinux/scripts# vi dollar.txt 
+root@arbaz:~/Desktop/practicelinux/scripts# cat dollar.txt 
+the cost is 4.00$
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '
+> \/$\p' dollar.txt
+sed: -e expression #1, char 6: unterminated address regex
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/\$/p' dollar.txt 
+the cost is 4.00$
+root@arbaz:~/Desktop/practicelinux/scripts# echo "Books are" | sed -n '/^Books/p'
+Books are
+root@arbaz:~/Desktop/practicelinux/scripts# echo "Books are" | sed -n '/are$/p'
+Books are
+root@arbaz:~/Desktop/practicelinux/scripts# cat data1.txt 
+this is a dog.
+this is an dog.
+this is the dog.
+this is lol dog.
+root@arbaz:~/Desktop/practicelinux/scripts# vi data1.txt 
+root@arbaz:~/Desktop/practicelinux/scripts# cat data1.txt 
+this is a dog.
+this is an dog.
+this is arbaz
+this is the dog.
+this is lol dog.
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/^this is arbaz$/p' data1.txt 
+this is arbaz
+root@arbaz:~/Desktop/practicelinux/scripts# vi data6
+root@arbaz:~/Desktop/practicelinux/scripts# cat data6
+this is a test
+cat is sleepiong
+this is nice hat
+this is what
+lol
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/.at/p' data6
+cat is sleepiong
+this is nice hat
+this is what
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/.is/p' data6
+this is a test
+cat is sleepiong
+this is nice hat
+this is what
+root@arbaz:~/Desktop/practicelinux/scripts# cat data6
+this is a test
+cat is sleepiong
+this is nice hat
+this is what
+lol
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/[thi]s/p' data6
+this is a test
+cat is sleepiong
+this is nice hat
+this is what
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/[ch]at/p' data6
+cat is sleepiong
+this is nice hat
+this is what
+root@arbaz:~/Desktop/practicelinux/scripts# cat data6
+this is a test
+cat is sleepiong
+this is nice hat
+this is what
+lol
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/[^ch]is/p' data6
+this is a test
+cat is sleepiong
+this is nice hat
+this is what
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/[^this]is/p' data6
+this is a test
+cat is sleepiong
+this is nice hat
+this is what
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/[^this] is/p' data6
+root@arbaz:~/Desktop/practicelinux/scripts# sed -n '/[^cat] is/p' data6
+this is a test
+this is nice hat
+this is what
+root@arbaz:~/Desktop/practicelinux/scripts# this is checking if cat is before is 
+bash: this: command not found
+root@arbaz:~/Desktop/practicelinux/scripts# echo "abc1222" | sed -n '/[[:alnum:]]/p'
+abc1222
+root@arbaz:~/Desktop/practicelinux/scripts# echo "This is a , test" | sed -n '/[[:punct:]]/p'
+This is a , test
+root@arbaz:~/Desktop/practicelinux/scripts# echo "This is Regular Pattern Expression" | sed -n '/Regular.*Expression$/p'
+This is Regular Pattern Expression
+root@arbaz:~/Desktop/practicelinux/scripts# echo "bt" | gawk '/b[ae]?t/{print $0}'
+bt
+root@arbaz:~/Desktop/practicelinux/scripts# echo "bat" | gawk '/b[ae]?t/{print $0}'
+bat
+root@arbaz:~/Desktop/practicelinux/scripts# echo "baet" | gawk '/b[ae]?t/{print $0}'
+root@arbaz:~/Desktop/practicelinux/scripts# echo "beat" | gawk '/b[ae]?t/{print $0}'
+root@arbaz:~/Desktop/practicelinux/scripts# echo "be" | gawk '/b[ae]?t/{print $0}'
+root@arbaz:~/Desktop/practicelinux/scripts# echo "bet" | gawk '/b[ae]?t/{print $0}'
+bet
+root@arbaz:~/Desktop/practicelinux/scripts# echo "beeeeeeeet" | gawk '/be+t/{print $0}'
+
+
+
+sed -n '/^[0-9][0-9][0-9]$' -> Ex: Zip
+
+
+
+
+
+[:alpha:]
+[:digit:]
+[:alnum:]
+[:blank:] -> Space or tab char
+[:lower:]
+[:space:] -> Whitespace
+[:print:] -> printable char
+
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# echo "bet" | gawk --re-interval '/be{1}t/{print $0}'
+bet
+root@arbaz:~/Desktop/practicelinux/scripts# echo "beet" | gawk --re-interval '/be{1,2}t/{print $0}'
+beet
+root@arbaz:~/Desktop/practicelinux/scripts# echo "beeeet" | gawk --re-interval '/be{1,2}t/{print $0}'
+root@arbaz:~/Desktop/practicelinux/scripts# echo "beaeeet" | gawk --re-interval '/b[ea]{1,2}t/{print $0}'
+root@arbaz:~/Desktop/practicelinux/scripts# echo "beaaeeet" | gawk --re-interval '/b[ea]{1,2}t/{print $0}'
+root@arbaz:~/Desktop/practicelinux/scripts# echo "beaat" | gawk --re-interval '/b[ea]{1,2}t/{print $0}'
+root@arbaz:~/Desktop/practicelinux/scripts# echo "baat" | gawk --re-interval '/b[ea]{1,2}t/{print $0}'
+baat
+root@arbaz:~/Desktop/practicelinux/scripts# 
+
+------------------=
+===========================================================================================
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+root@arbaz:~/Desktop/practicelinux/scripts# echo $PATH | sed 's/:/ /g'
+/usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
+root@arbaz:~/Desktop/practicelinux/scripts# echo $PATH | sed 's/:/          /g'
+/usr/local/sbin          /usr/local/bin          /usr/sbin          /usr/bin          /sbin          /bin
+root@arbaz:~/Desktop/practicelinux/scripts# 
+
+
+==============================================================================================
+
+Chapter 21. Advance SED:
+
+sed '/^$/d' data.txt
+
+d -> del
+^$ -> Start and end this will del all blank lines
+
+
+multi command in sed editor :
+
+sed '/text/{ COMMAND ; s/OriginalText/ReplaceText/  }' file.txt
+
+
+root@arbaz:~/Desktop/practicelinux/scripts# cat data1.txt 
+this is a dog.
+this is an dog.
+this is arbaz
+this is the dog.
+this is lol dog.
+root@arbaz:~/Desktop/practicelinux/scripts# sed '/arbaz/{N ; s/\n/ / }' data1.txt 
+this is a dog.
+this is an dog.
+this is arbaz this is the dog.
+this is lol dog.
+root@arbaz:~/Desktop/practicelinux/scripts# sed '/arbaz/{N ; s/\n/ \t / }' data1.txt 
+this is a dog.
+this is an dog.
+this is arbaz 	 this is the dog.
+this is lol dog.
+root@arbaz:~/Desktop/practicelinux/scripts# sed '/arbaz/{N ; s/\n/ \t this is tab space / }' data1.txt 
+this is a dog.
+this is an dog.
+this is arbaz 	 this is tab space this is the dog.
+this is lol dog.
+root@arbaz:~/Desktop/practicelinux/scripts# 
+
+N -> Combile next line with that line
+
+-------------------------------------------------
+
+SKIPPING ADVANCE TOPICS OF GAWK AND SED
+
+====================
+
+Chapter 23: Working with Alternative Shells:
+
+SKIPPING THIS ALSO
