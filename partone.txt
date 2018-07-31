@@ -1,4 +1,23 @@
 process start on bootup : /etc/inittabs or /etc/init.d by defining entries at /etc/rcX.d folder where X is run level.
+X => 0 to 5
+(0 will run first, then 1st to 5th)
+
+And lets imagine this program looked inside a scripts folder for running the scripts. To order the priority of scripts you would name them in lets say numerical order. This order is what dictates the relation between init.d and rcX.d
+
+In other words init.d contains the scripts to run and the rcX.d contains their order to run.
+
+The X value in rcX.d is the run level. This could be loosely translated to the OS current state.
+
+If you dig inside the rcX.d scripts you will find this formatting:
+
+Xxxabcd
+
+=> X is replaced with K or S, which stands for whether the script should be killed or started in the current run level
+=> xx is the order number
+=> abcd is the script name (the name is irrelevant however where it points is the script this will run)
+
+-----------------
+
 
 there are 5 run init level in linux . 
 l-1 -> ex:terminal , l-2 -> ex: linux apps , l-5 -> Graphical desktop window
